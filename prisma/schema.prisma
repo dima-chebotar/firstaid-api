@@ -1,0 +1,175 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id Int @id @default(autoincrement())
+
+  email String @unique
+
+  isEmailConfirmed Boolean @default(false)
+
+  password String?
+
+  firstName String?
+
+  lastName String?
+
+  birthdate DateTime?
+
+  gender String?
+
+  weight Int?
+
+  country String?
+
+  avatar String?
+
+  provider String?
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  chatRooms ChatRoom[]
+
+  generalBloodAnalysis GeneralBloodAnalysis[]
+
+  @@map("Users")
+}
+
+enum RoomType {
+  CONSUMER_TO_GPT
+  CONSUMER_TO_CONSUMER
+  CONSUMER_TO_SUPPORT
+}
+
+enum MessageFrom {
+  USER
+  ASSISTANT_GPT
+  SUPPORT
+}
+
+model ChatRoom {
+  id Int @id @unique @default(autoincrement())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  userId Int
+
+  type RoomType @default(CONSUMER_TO_GPT)
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  chatMessages ChatMessage[]
+
+  @@map("ChatRooms")
+}
+
+model ChatMessage {
+  id Int @id @default(autoincrement())
+
+  chatRoom ChatRoom @relation(fields: [chatRoomId], references: [id], onDelete: Cascade)
+
+  chatRoomId Int
+
+  message String @db.Text
+
+  isRead Boolean @default(false)
+
+  from MessageFrom @default(USER)
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  @@map("ChatMessages")
+}
+
+model GeneralBloodAnalysis {
+  id Int @id @unique @default(autoincrement())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  userId Int
+
+  esr Float?
+
+  plt Float?
+
+  rdwSd Float?
+
+  pdw Float?
+
+  mpv Float?
+
+  pLcr Float?
+
+  pct Float?
+
+  lymph_rel Float?
+
+  lymph_abs Float?
+
+  mono_rel Float?
+
+  mono_abs Float?
+
+  hct Float?
+
+  hgb Float?
+
+  rbc Float?
+
+  mcv Float?
+
+  mch Float?
+
+  mchc Float?
+
+  wbc Float?
+
+  neut_abs Float?
+
+  eo_abs Float?
+
+  baso_abs Float?
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  messages GeneralBloodAnalysisMessage[]
+
+  @@map("GeneralBloodAnalyses")
+}
+
+model GeneralBloodAnalysisMessage {
+  id Int @id @default(autoincrement())
+
+  generalBloodAnalysis GeneralBloodAnalysis @relation(fields: [generalBloodAnalysisId], references: [id], onDelete: Cascade)
+
+  generalBloodAnalysisId Int
+
+  message String @db.Text
+
+  isRead Boolean @default(false)
+
+  from MessageFrom @default(USER)
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  @@map("GeneralBloodAnalysisMessages")
+}

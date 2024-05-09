@@ -1,0 +1,23 @@
+{
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "testRegex": ".e2e-spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "@app/gpt/(.*)": "<rootDir>/../libs/gpt/src/$1",
+    "@app/gpt": "<rootDir>/../libs/gpt/src",
+    "@app/playht/(.*)": "<rootDir>/../libs/playht/src/$1",
+    "@app/playht": "<rootDir>/../libs/playht/src",
+    "@app/pdf-parser/(.*)": "<rootDir>/../libs/pdf-parser/src/$1",
+    "@app/pdf-parser": "<rootDir>/../libs/pdf-parser/src",
+    "@app/mail/(.*)": "<rootDir>/../libs/mail/src/$1",
+    "@app/mail": "<rootDir>/../libs/mail/src"
+  }
+}

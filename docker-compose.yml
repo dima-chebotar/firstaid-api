@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+
+  postgres:
+    image: postgres:15
+    container_name: firstaid-db
+    restart: always
+    tty: true
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: firstaid
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - firstaid-postgres-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:alpine
+    container_name: firstaid-redis
+    restart: always
+    tty: true
+    ports:
+      - "6379:6379"
+
+volumes:
+  firstaid-postgres-data:
